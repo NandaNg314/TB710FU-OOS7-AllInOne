@@ -1,5 +1,8 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.3（内置 LSPosed v3.3 + 原生杜比全景声 v1.1）- 2026-11-24
+- **新增原生杜比全景声（Dolby Atmos v1.1）**：自动安装极简原生「杜比全景声」控制 App（含控制中心快捷磁贴），直接驱动本机联想原装 `libswdap.so` 与 `vendor.dolby.hardware.dms@2.0-service`，完整加载 69 项本机四扬声器原厂调音参数；支持动态/电影/音乐/人声/游戏 5 档模式、智能均衡器、环绕虚拟器、音量平衡与对话增强；支持扬声器 ↔ 蓝牙 ↔ USB 切换自动重绑，不改动 `audio_policy_configuration.xml`（零干扰 LHDC V5）。
+
 ## v2.2（内置 LSPosed v3.3）- 2026-11-24
 - **新增在线一键更新与二合一打包**：接入 SukiSU/KSU 在线更新通道（国内直连加速），刷入/更新 KSU 模块时自动同步覆盖升级内置的 `TB710FU_OOS7_AllInOne_v3.3.apk`（同签名免重勾作用域）。
 - **修复待机电量异常（核心突破）**：修复无大幅运动传感器（`mMotionSensor == null`）导致系统整晚无法进入 Deep Doze（深度打盹 = 0）的问题，解锁原生深度休眠；手写笔监听改用 `inotifyd` 零轮询并默认关闭笔息屏供电（`PEN_WAKEUP=0`）；`mtp-guard.sh` 未插线时降频至 30s。
