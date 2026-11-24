@@ -1,5 +1,9 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.4.3 (2026-11-25)
+- **录音与语音输入音量修复**：`mixer_paths_pineapple_mtp.xml` 将内置麦 `speaker-mic` 数字前级 `TX_DEC0/2 Volume` 从 `84`（0 dB）提升至 `96`（+12 dB，响度提升 4 倍），保持 `ADC1/2=12` 不变，零影响小V 硬件唤醒与通话 AEC。
+- **GPU 频率锁定修复与调频优化**：`sm8650q_sched.sh` 将 `default_pwrlevel` 恢复为 `11`（231MHz，彻底解除空闲锁 366MHz），同时启用 `devfreq/mod_percent=120`（+20% 动态升频灵敏度），兼顾空闲省电、高级材质流畅与游戏 903MHz 满血释放。
+
 ## v2.4.2 (2026-11-24)
 - **三指手势修复**：补齐 `vivo.software.globalgesture`，恢复三指下滑截屏、三指上滑分屏与三指区域截屏。
 - **冷启动流畅度优化**：新增 6 核 `targetconfig_6core.xml` 修复高通 `perf2-hal` 拓扑；内置 LSPosed 模块升至 **v3.6**（纯 Java 拦截缺失 `IVPerf` 阻塞，无需新勾作用域）；`sm8650q_sched.sh` 优化 `input_boost_ms=120` 与 `top-app uclamp.min=15`。
