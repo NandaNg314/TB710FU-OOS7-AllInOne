@@ -1,5 +1,8 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.4.1（修复设置搜索栏悬浮键盘卡死与重影白屏，内置 LSPosed v3.5）- 2026-11-24
+- **修复系统设置搜索栏在悬浮键盘 / 实体键盘下无法进入搜索态、透底重影或左栏白屏**：在 `TB710FU_OOS7_AllInOne.apk`（`v3.5`）新增 `SettingsSearchFixHook`，绕过 OriginUI `VSearchView`（`wa.z.g3()`）对底部 IME `WindowInsetsAnimation` 的死等逻辑，点击搜索框即可瞬间切入搜索态并显示「搜索建议」、右侧 `×` 取消按钮与弹起悬浮键盘，退出干净无白屏（悬浮键盘 / 常规软键盘 / 磁吸实体键盘全兼容）。
+
 ## v2.4（蓝心小V硬件唤醒 + 通信共享长稳加固 + QQ横屏修复，内置 LSPosed v3.4）- 2026-11-24
 - **新增蓝心小V（“小V小V”）ADSP LPI 硬件语音唤醒**：内置 `UserDefinedMi.udm`、`udk7_opaque.bin`、修补版 `liblsmclient.so`、4 条 `ListenSoundModel` SELinux 规则及 `XiaoVUdk7Hook`（合入 `TB710FU_OOS7_AllInOne.apk` `v3.4`）。实测走高通 ADSP 硬件低功耗通道（`powerConsumptionMw: 0`，零 AP 录音、零常驻唤醒锁），不影响待机续航。
   - **老版本升级提示**：覆盖更新重启后，请在 Vector / LSPosed 管理器中为 `TB710FU_OOS7_AllInOne` 勾选新增作用域 **`语音唤醒`（`com.vivo.voicewakeup`）** 后即可立即生效。
