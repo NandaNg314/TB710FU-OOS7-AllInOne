@@ -1,5 +1,11 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.4.2 (2026-11-24)
+- **三指手势修复**：补齐 `vivo.software.globalgesture`，恢复三指下滑截屏、三指上滑分屏与三指区域截屏。
+- **冷启动流畅度优化**：新增 6 核 `targetconfig_6core.xml` 修复高通 `perf2-hal` 拓扑；内置 LSPosed 模块升至 **v3.6**（纯 Java 拦截缺失 `IVPerf` 阻塞，无需新勾作用域）；`sm8650q_sched.sh` 优化 `input_boost_ms=120` 与 `top-app uclamp.min=15`。
+- **高级材质 GPU 起步优化**：Adreno 750 起步唤醒档位 `default_pwrlevel=9`（366MHz），缓解退出控制中心实时模糊掉帧，空闲仍正常回落 231MHz。
+- **原生杜比全景声 v1.2**：按场景模式独立保存并对齐原厂调音、消除播歌重连抖动、彻底隐藏左上角状态栏 `DO` 图标与常驻通知。
+
 ## v2.4.1（修复设置搜索栏悬浮键盘卡死与重影白屏，内置 LSPosed v3.5）- 2026-11-24
 - **修复系统设置搜索栏在悬浮键盘 / 实体键盘下无法进入搜索态、透底重影或左栏白屏**：在 `TB710FU_OOS7_AllInOne.apk`（`v3.5`）新增 `SettingsSearchFixHook`，绕过 OriginUI `VSearchView`（`wa.z.g3()`）对底部 IME `WindowInsetsAnimation` 的死等逻辑，点击搜索框即可瞬间切入搜索态并显示「搜索建议」、右侧 `×` 取消按钮与弹起悬浮键盘，退出干净无白屏（悬浮键盘 / 常规软键盘 / 磁吸实体键盘全兼容）。
 
