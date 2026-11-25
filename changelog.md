@@ -1,5 +1,12 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.5 (2026-11-25)
+- **新增 SukiSU WebUI 控制台**：系统全项体检、自选应用强制横屏管理器（`357141415` 持久化）、ZRAM 可调（关闭/4G/6G/8G/12G 与 lz4/zstd）、Adreno 750 GPU 灵敏度即时调节、HDR/人脸补光/双击亮屏快捷开关
+- **修复联想相机拍照与微距闪退**（LSP v3.7）：绕过 `libmorpho_ImageRefiner.so` 拍照 `SIGILL`，从 `CameraId` 源头与 `CameraManager` 修复微距 `-1` 越界与故障 13
+- **修复 HDR / UltraHDR 亮度同步**（LSP v3.7）：同步真实背光 nit 值到 `SurfaceFlinger`，移除虚假 `vivo.hardware.display.xdr` 声明
+- **息屏卡顿与细节打磨**：屏蔽 Q4 独显探测（`persist.vivo.displayic.enable=false`）、不再覆写人脸解锁补光设置、补全 `logpersistd_logging_prop` SELinux 规则、开启 MGLRU `min_ttl_ms=1000`
+- 内置 LSPosed 模块升级至 **v3.7 (37)**，原生杜比全景声保持 **v1.2 (12)**
+
 ## v2.4.3 (2026-11-25)
 - **录音与语音输入音量修复**：`mixer_paths_pineapple_mtp.xml` 将内置麦 `speaker-mic` 数字前级 `TX_DEC0/2 Volume` 从 `84`（0 dB）提升至 `96`（+12 dB，响度提升 4 倍），保持 `ADC1/2=12` 不变，零影响小V 硬件唤醒与通话 AEC。
 - **GPU 频率锁定修复与调频优化**：`sm8650q_sched.sh` 将 `default_pwrlevel` 恢复为 `11`（231MHz，彻底解除空闲锁 366MHz），同时启用 `devfreq/mod_percent=120`（+20% 动态升频灵敏度），兼顾空闲省电、高级材质流畅与游戏 903MHz 满血释放。
