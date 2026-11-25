@@ -1,5 +1,10 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.5.2 (2026-11-25)
+- **彻底修复原子隐私系统（`XSpace`）**：恢复 `/data/vivo-common` 原厂 `0777` 权限 + 一次性幂等初始化 `/data/vivo-common/virtual_system`（`0770` + `vivo_data_file`）与首次设置入口恢复，**零后台轮询、不破坏 Deep Doze**；真机冷重启实测隐私空间（user 666）创建、切换与持久化全部正常
+- **新增作用域醒目提醒**：在 SukiSU Nova 模块说明与刷入完成输出中提醒用户重启后到 Vector / LSPosed 重新勾选推荐作用域
+- 完整包含 `v2.5.1` 全部功能（真物理微距副摄直连、联想相机拍照修复、SukiSU WebUI 控制台、HDR 亮度同步、息屏防卡顿）
+
 ## v2.5.1 (2026-11-25)
 - **真正点亮后置物理微距副摄（`Device 2`）**：新增 `sepolicy.rule` 放行 `cameraserver` 读取 `camera2_extensions_prop`（解除 `expose Aux 0` 拦截），配合 LSP **v3.7.1 (38)** 将联想相机微距直连物理副摄 `Device 2`（实测 `CamX cameraId: 2` 正常取景与拍照）
 - 完整包含 `v2.5` 全部功能（SukiSU WebUI 控制台、自选强制横屏、可调 ZRAM/GPU、HDR 亮度同步、息屏防卡顿）
