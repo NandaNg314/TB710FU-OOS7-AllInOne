@@ -1,3 +1,7 @@
+## v2.7 (AioFix v3.9) - 2026-11-26
+- **修复蓝牙耳机通话（BT SCO）无声**：补全 `audio_policy_configuration_lhdc_sw.xml` 4 个 BT SCO 端口 `<profile>`，并精准 8 字节修补 `audio.primary.pineapple.so` 在 LHDC 软解模式下误拦 BT SCO 路由（`-22`）的校验，零影响 LHDC/AAC 与杜比外放。
+- **完整修复桌面图标「时间光影」**：合入 `TimeShadowFixHook`（`q5.g.F()` 解锁 + `IconStyleOverlayView.s1()` 光影渲染 + `IconSettingsFragment.j() -> k()` 修复开关错读 `Settings.System` 回弹），并在「图标」设置页底部正常显示生效。
+
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
 ## v2.6 (versionCode: 260)
