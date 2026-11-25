@@ -1,5 +1,15 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.6 (versionCode: 260)
+- **个性化三件套全量解锁**：新增系统风格（圆角/壁纸吸色/基础色）、时间光影、OriginOS 7 图标风格（精美/简约/原生 16 色盘/质感/已下载 + 默认/开放图标）及 `/system/etc/theme/style/{7,8}` 遮罩支持
+- **桌面体验增强**：解锁桌面文件夹 `2x1`（横向）与 `1x2`（竖向）自由切换；桌面设置新增「桌面显示搜索入口」独立开关与底部搜索胶囊
+- **原厂 782.4 nits 背光曲线与真 HDR10 / 相册 XDR 对齐**：重构背光坐标系映射与 SDR/HDR 双通道白点分离，支持 HDR10/HLG 视频与相册 UltraHDR/XDR 照片高光激发，同时保证 SDR 界面与文字不刺眼、开机锁屏零过曝零花屏
+- **原生硬件级直驱供电（旁路充电）**：打通游戏魔盒与电池设置「直驱供电」开关联动充电 IC (`charging_enable`)，并补齐 SELinux 权限消除 AVC
+- **满血游戏性能与联想动态温控联动**：新增 SukiSU WebUI 四档调度面板（智能自动 / 日常省电 / 均衡稳帧 / Monster 满血），Monster 模式自动联动 4224MHz LPDDR5X 满血带宽与联想 `case 300` 游戏温控阈值，纯事件驱动零后台轮询
+- **联想原厂相机 (`com.zui.camera`) 深度修复**：修复 `2x/4x/8x` 变焦拍照 `SIGILL` 闪退、人像追踪异常及物理微距镜头 (`Device 2`) 调用
+- **酷安 / B站等第三方应用防闪退与防吞草稿 (`SPSGuard`)**：修复 OriginOS 7 后台管控 (`com.vivo.pem` / `SuperProcessSystem`) 每 5 分钟误调 `forceStopPackageWithoutCancelNotification` 静默强杀前台打字应用及清空草稿的原生 Bug
+- **自动同步 LSPosed/Vector 作用域**：刷入模块自动同步新增推荐作用域（`com.bbk.theme`、`com.vivo.gamecube`、`com.vivo.pem`、`com.vivo.sps` 等），内置 `TB710FU_OOS7_AllInOne_v3.8.apk` 与 `TB710FU_DolbyAtmos.apk` 自动覆盖升级（2026-11-25）
+
 ## v2.5.4 (2026-11-25)
 - **修复 `service.sh` 开机时序 Bug（推荐所有用户更新）**：将原子隐私系统（`XSpace` 建 `virtual_system` + 恢复设置入口）、多应用强制横屏（`am compat`）与默认时区兜底移至 `sys.boot_completed=1` + 10s 后一次性执行，彻底解决部分升级用户开机过早调用 `pm/am/cmd` 导致原子隐私系统入口未自动恢复的问题（零常驻、零轮询、不影响 Deep Doze）
 - 完整包含 `v2.5.3` 全部功能（时区列表空白修复、原子隐私系统、物理微距副摄直连、SukiSU WebUI 控制台、HDR 亮度同步、息屏防卡顿）
