@@ -1,5 +1,9 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.5.3 (2026-11-25)
+- **彻底修复时区列表空白与双清默认格林尼治（GMT+0）**：在 `vivo_features.txt` 补齐 `vivo.software.timezonecorrection$vivo-support` 恢复 `tz_moniter` 系统服务与 247 城市手动时区列表；`service.sh` 新增条件兜底，仅在未设置或默认 GMT/UTC 时自动设为 `Asia/Shanghai`
+- 完整包含 `v2.5.2` 全部功能（原子隐私系统零轮询修复、物理微距副摄直连、联想相机拍照修复、SukiSU WebUI 控制台、HDR 亮度同步、息屏防卡顿）
+
 ## v2.5.2 (2026-11-25)
 - **彻底修复原子隐私系统（`XSpace`）**：恢复 `/data/vivo-common` 原厂 `0777` 权限 + 一次性幂等初始化 `/data/vivo-common/virtual_system`（`0770` + `vivo_data_file`）与首次设置入口恢复，**零后台轮询、不破坏 Deep Doze**；真机冷重启实测隐私空间（user 666）创建、切换与持久化全部正常
 - **新增作用域醒目提醒**：在 SukiSU Nova 模块说明与刷入完成输出中提醒用户重启后到 Vector / LSPosed 重新勾选推荐作用域
