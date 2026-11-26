@@ -1,15 +1,15 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
 ## v2.8 (versionCode: 280 / AioFix v4.0 / Dolby v1.3) - 2026-11-26
-- **根治杜比全景声后台被杀与冻结断链**：新增 system_server 防强杀与防冻结保护（拦截 Vivo Cleaner / RMS / FreezerHandle）及音频起流自愈保活，Session-0 dap 全局音效全天候在线；首次升级自动向控制中心追加「杜比全景声」快捷磁贴。
-- **消除音乐 App 硬件直通（Offload）绕过杜比无音效**：关闭 compressed_offload 旁路，QQ音乐 / 酷狗 / i音乐 / 网易云等统一走 deep_buffer 100% 经 libswdap.so 杜比渲染。
-- **原生杜比全景声升级至 v1.3（V2+V3 签名）**：默认完整保留联想原厂 dax-default.xml 针对四扬声器与耳机分别精调的 20 段频响及人声/IEQ 参数，新增「恢复原厂调音」按钮。
-- **修复四扬声器倒置横屏（180° 翻转）左右声道颠倒**：打通联想 HAL 私有参数 screen_rotation=0|180 → pal_set_degree() → w_ar_dsp_write_spin() 实时翻转四扬声器声道矩阵。
-- **基于联想原厂 40KB sku_pineapple 重建统一 Audio Policy**：彻底移除不存在的虚拟听筒 Earpiece（修复微信语音 / VoIP / 通信共享未插耳机时默认无声），恢复系统 Spatializer 空间音频、蓝牙 LE Audio、Type-C DP/HDMI 音频、384kHz Hi-Res direct_pcm、通话消回声 Echo Reference 与 24-bit 录音，完整保留软件 LHDC 与蓝牙通话 BT SCO。
-- **6 核 SM8650Q 硬件 IRQ 与 Wi-Fi 7 RPS 精准分流**：将 144Hz 显示/触控/GPU 中断绑定 Gold-A (cpu1-2)，UFS/蓝牙串口/USB3/IPCC 与 wlan0 RPS 分流至 Gold-B (cpu3-4)，解放单小核 cpu0；UFS 预读收敛至 256KB。
-- **修复游戏退回日常模式调度残留 Bug**：	b710_perf_apply.sh 加入原子互斥锁与双向安全写入器，100% 对称还原 WALT 迁移阈值、SBT、DDR memlat、L3 boost 与 GPU wake_timeout=60。
-- **消灭后台重启风暴与 SELinux 拒绝**：停用不支持 soc_id=696 的 endor.qlm-service（消除 5s 重启死循环与 72.9% AVC 刷屏）、qti-testscripts、console 与 mobile_log_d，实现全机 dmesg 零 SELinux AVC 拒绝。
-- **桌面「时间光影」与 .itz 主题完美共存 + 细节加固**：切换开放/已下载图标不再丢失时间光影开关记忆；HDR 亮度同步严格隔离内置主屏（Type-C 外接屏互不干扰，关开关秒级恢复 SDR）；直驱供电实时同步 charging_enable 节点；双击亮屏改为进程内直写（零 inotifyd）；FaceEngineService 增加调用方 UID 安全鉴权；禁用红外/NFC/钱包等手机幽灵包与死磁贴，多窗上限升至 6 个；升级 2.8 WebUI。
+- **根治杜比全景声后台被杀与冻结断链**：新增 `system_server` 防强杀与防冻结保护（拦截 Vivo Cleaner / RMS / `FreezerHandle`）及音频起流自愈保活，Session-0 `dap` 全局音效全天候在线；首次升级自动向控制中心追加「杜比全景声」快捷磁贴。
+- **消除音乐 App 硬件直通（Offload）绕过杜比无音效**：关闭 `compressed_offload` 旁路，QQ音乐 / 酷狗 / i音乐 / 网易云等统一走 `deep_buffer` 100% 经 `libswdap.so` 杜比渲染。
+- **原生杜比全景声升级至 v1.3（V2+V3 签名）**：默认完整保留联想原厂 `dax-default.xml` 针对四扬声器与耳机分别精调的 20 段频响及人声/IEQ 参数，新增「恢复原厂调音」按钮。
+- **修复四扬声器倒置横屏（180° 翻转）左右声道颠倒**：打通联想 HAL 私有参数 `screen_rotation=0|180` → `pal_set_degree()` → `aw_ar_dsp_write_spin()` 实时翻转四扬声器声道矩阵。
+- **基于联想原厂 40KB `sku_pineapple` 重建统一 Audio Policy**：彻底移除不存在的虚拟听筒 `Earpiece`（修复微信语音 / VoIP / 通信共享未插耳机时默认无声），恢复系统 `Spatializer` 空间音频、蓝牙 LE Audio、Type-C DP/HDMI 音频、384kHz Hi-Res `direct_pcm`、通话消回声 `Echo Reference` 与 24-bit 录音，完整保留软件 `LHDC` 与蓝牙通话 `BT SCO`。
+- **6 核 SM8650Q 硬件中断与 Wi-Fi 7 RPS 精准分流**：将 144Hz 显示/触控/GPU 中断绑定 `Gold-A (cpu1-2)`，UFS/蓝牙串口/USB3/IPCC 与 `wlan0` RPS 分流至 `Gold-B (cpu3-4)`，解放单小核 `cpu0`；UFS 预读收敛至 `256KB`。
+- **修复游戏退回日常模式调度残留 Bug**：`tb710_perf_apply.sh` 加入原子互斥锁与双向安全写入器，100% 对称还原 WALT 迁移阈值、`SBT`、`DDR memlat`、`L3 boost` 与 GPU `wake_timeout=60`。
+- **消灭后台重启风暴与 SELinux 拒绝**：停用不支持 `soc_id=696` 的 `vendor.qlm-service`（消除 5s 重启死循环与 72.9% AVC 刷屏）、`qti-testscripts`、`console` 与 `mobile_log_d`，实现全机 `dmesg` 零 SELinux AVC 拒绝。
+- **桌面「时间光影」与 `.itz` 主题完美共存 + 细节加固**：切换开放/已下载图标不再丢失时间光影开关记忆；HDR 亮度同步严格隔离内置主屏（Type-C 外接屏互不干扰，关开关秒级恢复 SDR）；直驱供电实时同步 `charging_enable` 节点；双击亮屏改为进程内直写（零 `inotifyd`）；`FaceEngineService` 增加调用方 UID 安全鉴权；禁用红外/NFC/钱包等手机幽灵包与死磁贴，多窗上限升至 6 个；升级 `v2.8` WebUI。
 ## v2.7 (AioFix v3.9) - 2026-11-26
 - **修复蓝牙耳机通话（BT SCO）无声**：补全 `audio_policy_configuration_lhdc_sw.xml` 4 个 BT SCO 端口 `<profile>`，并精准 8 字节修补 `audio.primary.pineapple.so` 在 LHDC 软解模式下误拦 BT SCO 路由（`-22`）的校验，零影响 LHDC/AAC 与杜比外放。
 - **完整修复桌面图标「时间光影」**：合入 `TimeShadowFixHook`（`q5.g.F()` 解锁 + `IconStyleOverlayView.s1()` 光影渲染 + `IconSettingsFragment.j() -> k()` 修复开关错读 `Settings.System` 回弹），并在「图标」设置页底部正常显示生效。
