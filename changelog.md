@@ -10,6 +10,7 @@
 - **修复游戏退回日常模式调度残留 Bug**：`tb710_perf_apply.sh` 加入原子互斥锁与双向安全写入器，100% 对称还原 WALT 迁移阈值、`SBT`、`DDR memlat`、`L3 boost` 与 GPU `wake_timeout=60`。
 - **消灭后台重启风暴与 SELinux 拒绝**：停用不支持 `soc_id=696` 的 `vendor.qlm-service`（消除 5s 重启死循环与 72.9% AVC 刷屏）、`qti-testscripts`、`console` 与 `mobile_log_d`，实现全机 `dmesg` 零 SELinux AVC 拒绝。
 - **桌面「时间光影」与 `.itz` 主题完美共存 + 细节加固**：切换开放/已下载图标不再丢失时间光影开关记忆；HDR 亮度同步严格隔离内置主屏（Type-C 外接屏互不干扰，关开关秒级恢复 SDR）；直驱供电实时同步 `charging_enable` 节点；双击亮屏改为进程内直写（零 `inotifyd`）；`FaceEngineService` 增加调用方 UID 安全鉴权；禁用红外/NFC/钱包等手机幽灵包与死磁贴，多窗上限升至 6 个；升级 `v2.8` WebUI。
+
 ## v2.7 (AioFix v3.9) - 2026-11-26
 - **修复蓝牙耳机通话（BT SCO）无声**：补全 `audio_policy_configuration_lhdc_sw.xml` 4 个 BT SCO 端口 `<profile>`，并精准 8 字节修补 `audio.primary.pineapple.so` 在 LHDC 软解模式下误拦 BT SCO 路由（`-22`）的校验，零影响 LHDC/AAC 与杜比外放。
 - **完整修复桌面图标「时间光影」**：合入 `TimeShadowFixHook`（`q5.g.F()` 解锁 + `IconStyleOverlayView.s1()` 光影渲染 + `IconSettingsFragment.j() -> k()` 修复开关错读 `Settings.System` 回弹），并在「图标」设置页底部正常显示生效。
