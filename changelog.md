@@ -1,5 +1,17 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.8.1 (versionCode: 281 / AioFix v4.1 / Dolby v1.3) - 2026-11-26
+- **根治游戏态「游戏魔盒重播进入动画」联动「通信共享」断连**：定位并拦截 `system_server` 内 `RMAms.killProcess` / `stopPackage` / `VivoAmsImpl.forceStopPackageByRms` 在游戏中因内存压力误杀 `com.vivo.gamecube:assistantui`（重拉起冷启动重播进游戏横幅并在 3 秒后触发清后台），并为 `com.vivo.connbase*` / `vdfs` / `handoff` / `vmdri` / `linkservice` 全链路加上防强杀与防冻结护盾，彻底解决游戏中通信共享掉线问题。
+- **修复截图动画明显掉帧（144Hz 瞬时脉冲 + 原生 AOT 编译）**：针对移植包 `com.vivo.smartshot` / `upslide` / `systemui` / `card` 默认处于 `[status=verify]` 纯解释执行及日常省电档 GPU 卡在 `231MHz` 的问题，新增刷入/开机单次 `speed` 原生编译与截屏绑定瞬间 `1.8s` GPU/DDR/Gold-B 瞬时提频脉冲（不切温控档、不重启 `thermal-engine`，动画结束自动归位省电档），实测截图掉帧率压降至 `6.59%`、GPU P95 稳定 `7ms`。
+- **自愈恢复「智能侧边栏」与「原子组件商店」**：移除 `v2.8` 误禁用列表中的 `com.vivo.card`（`SuperCard.apk` 智能侧边栏插件本体）与 `com.vivo.cardstore`，刷入与开机自动恢复启用并自愈因预测性返回互斥遗留的 `upslide_open_quick_app_small_window=close` 死锁状态。
+- **大型游戏（如《金铲铲之战》）防闪退与 `8G/12G/16G` 全运存自适应调度**：
+  - 游戏内呼出小窗/通知失焦新增 **`15 秒` 性能降级防抖**，彻底消除切小窗瞬间 `0ms` 跌落日常频点与重启 `thermal-engine` 造成的帧率塌陷；修复高温退档误清零 `cooling_device` 引发的瞬态压降；
+  - 拦截 Vivo `SPS/PEM` 低内存自杀机制误杀前台/小窗及近期活跃游戏，自动剔除 `forbidBgStartAppsName.txt` 游戏黑名单；
+  - 移除阻塞 `kswapd` 回收的 `lru_gen/min_ttl_ms=1000`、开机桌面期 `swapoff` 内存冲击及全局强锁游戏 `144Hz` 属性；按物理运存（`8GB` vs `12GB/16GB`）动态匹配 ZRAM、`swappiness` 与 `LMKD` 阈值。
+- **根治 HDR / UltraHDR 小窗失效与 5 分钟衰减**：解除 `display_id_hdr.xml` 的 `timeMaxSecs=300`（5 分钟硬限时）与省电拦截，将触发面积阈值下调至 `0.5%` 支持自由小窗 HDR，并在 `HdrBrightnessFixHook` 实现内置主屏与虚拟屏严格隔离及小窗 XDR 免旁路。
+- **恢复系统设置「时间光影」与「重绘图标」原生开关**：精准区分官方内置主题与第三方下载 `.itz` 主题包，在官方主题下完整恢复 `设置 → 桌面、锁屏与壁纸 → 图标` 中的「时间光影」与「重绘图标」原生入口，同时保持第三方 `.itz` 图标包零冲突共存。
+- **SukiSU WebUI 精简与「精细 150 级 / 联想原厂 15 级」音量模式切换**：移除与系统设置重复的 4 个冗余开关；新增「精细 150 级」与「联想原厂 15 级」音量步进无损换算切换、运存规格自适应识别与近期游戏异常退出原因诊断面板。
+
 ## v2.8 (versionCode: 280 / AioFix v4.0 / Dolby v1.3) - 2026-11-26
 - **根治杜比全景声后台被杀与冻结断链**：新增 `system_server` 防强杀与防冻结保护（拦截 Vivo Cleaner / RMS / `FreezerHandle`）及音频起流自愈保活，Session-0 `dap` 全局音效全天候在线；首次升级自动向控制中心追加「杜比全景声」快捷磁贴。
 - **消除音乐 App 硬件直通（Offload）绕过杜比无音效**：关闭 `compressed_offload` 旁路，QQ音乐 / 酷狗 / i音乐 / 网易云等统一走 `deep_buffer` 100% 经 `libswdap.so` 杜比渲染。
