@@ -1,5 +1,14 @@
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
+## v2.8.3 (2026-11-27)
+- **新增通用全屏强制横屏**：在 `system_server` 层破除夸克浏览器（`com.quark.browser`）等应用的平行视界竖栏限制，实现 `3200×2000` 全屏横屏且保留小窗比例（WebUI 实时切换，无需应用进程注入）
+- **按需修复强制横屏竖屏相机 90° 顺时针旋转**：严格仅对开启强制横屏的应用恢复 `sys.multiwin_for_camera` 原生 `cameraserver` 旋转补偿，修复 QQ 强制横屏后相机画面顺时针旋转 90° 问题（未开启强制横屏零影响）
+- **新增原生横屏游戏防切竖屏护栏**：保护《崩坏：星穹铁道》《原神》等横屏游戏不被 Android 17 `357141415` 误切竖屏，并自动自愈历史误开项
+- **根治前台应用锁屏解锁四角 117px 黑圆角**：归零解锁动画过渡圆角与屏幕装饰圆角，消除 QQ 等应用在前台时解锁瞬间的异常黑圆角
+- **根治自动亮度掉最低**：还原联想 `stk_stk6b9x` 真实光感 `lux`（修复 `BaseLightFusion` 归零），启用 `pad_lcd_v1` 曲线并挂载 `SensorFrameworkConfig.json` 关闭屏下光感截图
+- **隐藏锁屏右下角空白相机图标**：自动切换为原生 `com.vivo.none`
+- 内置 LSPosed 模块升级至 `v4.3` (`vc=44`)，杜比全景声保持 `v1.3` (`vc=13`)
+
 ## v2.8.1 (versionCode: 281 / AioFix v4.1 / Dolby v1.3) - 2026-11-26
 - **根治游戏态「游戏魔盒重播进入动画」联动「通信共享」断连**：定位并拦截 `system_server` 内 `RMAms.killProcess` / `stopPackage` / `VivoAmsImpl.forceStopPackageByRms` 在游戏中因内存压力误杀 `com.vivo.gamecube:assistantui`（重拉起冷启动重播进游戏横幅并在 3 秒后触发清后台），并为 `com.vivo.connbase*` / `vdfs` / `handoff` / `vmdri` / `linkservice` 全链路加上防强杀与防冻结护盾，彻底解决游戏中通信共享掉线问题。
 - **修复截图动画明显掉帧（144Hz 瞬时脉冲 + 原生 AOT 编译）**：针对移植包 `com.vivo.smartshot` / `upslide` / `systemui` / `card` 默认处于 `[status=verify]` 纯解释执行及日常省电档 GPU 卡在 `231MHz` 的问题，新增刷入/开机单次 `speed` 原生编译与截屏绑定瞬间 `1.8s` GPU/DDR/Gold-B 瞬时提频脉冲（不切温控档、不重启 `thermal-engine`，动画结束自动归位省电档），实测截图掉帧率压降至 `6.59%`、GPU P95 稳定 `7ms`。
