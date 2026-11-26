@@ -1,3 +1,16 @@
+## v2.8.4（内置 LSPosed v4.4 + 原生杜比 v1.3）
+
+### 通信共享游戏防断联稳定性增强
+- **进程与内存护盾**：新增 `ProcessList.setOomAdj` 保护并将 `com.vivo.vdfs` / `com.vivo.linkservice` 压低至 `-500`，防止 8GB 机型游戏高负载下原生 `lmkd` 误杀导致通信共享断联；同时放行 `deviceaccessory:ai` / `:kit1` 冗余缓存进程，立省约 228 MB 内存。
+- **`ConnBase` 防 192 秒空闲误断**：Hook `P2pIdleTimeoutListener.onAlarm` 与 `VivoConnectService$3`，当 `vcmsnet00/10` 正在承载共享流量时仅重置闹钟、不因蓝牙瞬断误判 P2P 空闲而掐断连接。
+- **内核网络缓冲与 P2P ARP 保活**：调大 `net.core.rmem_default` / `wmem_default` 至 1 MB（`netdev_max_backlog=4096`），拉长 IPv4/IPv6（含动态 `p2p0`）邻居表 `gc_stale_time=600`、`base_reachable_time_ms=60000`，避免游戏突发丢包及 `libhons_vmnet` 因 ARP 老化关闭转发通道。
+- **游戏态动态 Wi-Fi 低延迟锁**：仅在「游戏前台亮屏 + 通信共享活跃」时自动申请 `WIFI_MODE_FULL_LOW_LATENCY`（`d2dSatisfiesConnection=true`），退出游戏或息屏立即释放，兼顾低延迟抗断流与日常零待机耗电。
+
+### 保留项
+- 完整保留 `v2.8.3` 全部功能与修复（自动亮度 0 lux 修复与平板 LCD 曲线、应用前台锁屏去异常圆角、通用强制横屏与按需竖屏相机旋转、横屏游戏防切竖屏、爱奇艺/B站 HDR10、时间光影、自定义音量档位、杜比与蓝牙通话等）。
+
+---
+
 # 更新日志（TB710FU OriginOS 7 全能修复）
 
 ## v2.8.3 (2026-11-27)
