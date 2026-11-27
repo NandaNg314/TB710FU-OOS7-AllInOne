@@ -1,3 +1,16 @@
+## v2.8.5（内置 LSPosed v4.5 + 原生杜比 v1.3）
+
+### 后台清理、模拟定位、充电触控与自动亮度专项修复
+- **修复音乐软件后台无法关闭 & RAM 清理失效**：在 `VivoAmsImpl.forceStopPackageByRms` 放行 OriginOS 7 最近任务单卡上滑（`single-cleaner`）与一键清理（`cleaner`），彻底解决 QQ 音乐、自带音乐等音频应用划掉后后台仍在播放的问题；同时将 `com.tb710.aiofix`（人脸引擎服务）加入清理与 Freezer 豁免白名单，一键清除后杜比全景声、通信共享与人脸引擎全部原 PID 保活。
+- **根治 Wi-Fi 版 FakeGPS / 模拟定位导致的 `system_server` 软重启**：双链路彻底修复——拦截 `VivoGnssLocationProviderImpl` 9 个未判空方法消除无 GNSS HAL 硬件的空指针异常，同时补齐 `system_server` 写 `radio_prop` 的 SELinux 策略并为 `TimeZoneApplier.applyTimeZone` 加装异常兜底，解决模拟坐标触发 `VivoTimeZoneCorrection` 写 `persist.radio.vivo.zone` 被拒导致的系统软重启。
+- **充电触控抗干扰优化 & 四向触控方向实时同步**：无蓝牙手写笔时开机默认关闭 `/proc/support_pen=0` 降低充电共模噪声干扰，连笔自动开启 `1` + 120Hz、断笔复原 `0`，并在 WebUI「性能与硬件」页新增 `自动按需 / 常开兼容` 即时切换开关与仪表盘触控方向监测；实时监听屏幕四向旋转（`0°/90°/180°/270°`）同步写入 `/proc/panel_direction`。
+- **自动亮度室内曲线柔化**：重调 `pad_lcd_v1` 与 `UserModifyCurveV3` 10 段连续曲线，压低 `5–1000 lux` 室内过亮段（贴合联想原厂 70 nit 舒适区，较旧版柔和约 30%），保留 `0 lux = 2 nit` 夜间底线与 `10000 lux = 800 nit` 户外峰值及用户拖动学习，首次升级自动清除旧版过亮缓存。
+
+### 保留项
+- 完整保留 `v2.8.4` 全部功能与修复（通信共享游戏防断联增强、自动亮度 0 lux 修复、锁屏解锁去黑圆角、通用强制横屏与按需竖屏相机旋转、横屏游戏防切竖屏、爱奇艺/B站 HDR10、时间光影、自定义音量档位、杜比与蓝牙通话等）。
+
+---
+
 ## v2.8.4（内置 LSPosed v4.4 + 原生杜比 v1.3）
 
 ### 通信共享游戏防断联稳定性增强
