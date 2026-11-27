@@ -1,3 +1,17 @@
+## v2.8.8（内置 LSPosed v4.8 + 原生杜比 v1.4）
+
+### 爆音根治、vivo 互传 160MHz 冲突修复、HDR 零闪烁与 8GB 后台留存全面升级
+- **根治横屏 QQ / 音乐播放爆音（0 损音质）**：在 `initrc/commshare.rc` 与 `post-fs-data.sh` 关闭 SM8650Q DPU 对 UI 图层的硬件内联旋转（`vendor.display.disable_inline_rotator_ui=1`、`enable_rotator_ui=0`），彻底消除横屏文件浏览/聊天气泡与音频输出并发引发的爆音；完整保留 YUV 视频硬件旋转加速与原厂杜比音质，原生杜比同步升级至 `v1.4` 去除冗余 `screen_rotation` 写参竞争。
+- **根治 vivo 互传 5180MHz @ 160MHz 冲突与「设备忙」**：单文件挂载 `WCNSS_qcom_cfg.ini` 启用 5G 室内信道 P2P GO 与 STA+SAP/GO SCC 并发（5G 信道表扩展开放 Ch 36–64 / 5180MHz）；新增 `EasyShareP2pHook`（同时纳入 `com.vivo.easyshare` 作用域），动态放行 `config_wifiEnableStaIndoorChannelForPeerNetwork` 并为 `WifiP2pManager` 的 `removeGroup`/`createGroup` 加装异步栅栏与自动退避重试，**完全不伤通信共享（CommShare）**。
+- **酷安 / 相册 UltraHDR 提亮、退场零爆闪与三档色彩联动**：`HdrBrightnessFixHook` 补齐 UltraHDR Gainmap `5.0×` 提亮兜底，并新增退出 HDR 动画期 `sdrWhitePointNits` 锚定（待背光回落至 SDR 目标 `1%` 内再解除），彻底消除退出瞬间的全屏爆闪；`DisplayColorFixHook` 修复旧版 `1023(0,0)` 引起的 144Hz `map unknown` 刷屏与画面闪烁——标准（`257,1`）与专业（`0,1`）进退 HDR 零色域切换，仅艳丽模式（`1,0+1.15f`）自动避让至 `1023(0,1)+sat=1.0` 并带 `700ms` 退出防抖（息屏立即还原）。
+- **8GB 后台留存根治 & ZRAM 脚本 4 处缺陷修复**：修复 `/data/adb/tb710_prefs.conf` CRLF 污染导致的配置解析失效、`service.sh` 开机 15 秒与系统 `swapon_zram` 竞态及 `watermark_scale_factor` 被覆写问题，删除无效 `extra_free_kbytes`，开机稳定生效 `8 GiB lz4 ZRAM + wsf=25`；新增 `RamRetentionHook`（作用域 `com.vivo.sps`）温和化 NRMS 下发至 `lmkd` 的参数（`thrashing=58%`、`minAdj=700`、`psi=100/200`）并合理压低 8GB 机型 NRMS 查杀水位；移除 `SPSGuard` 15 分钟后自杀降级，保留原生 Doze 深度休眠兼顾多后台留存与待机续航。
+- **蓝牙音量与基础体验完善**：对齐 14 路蓝牙音量曲线至 `0 dB` 无损上限（解决部分蓝牙/TWS 耳机最大音量偏小），完善天气定位基础服务支持。
+
+### 保留项
+- 完整保留 `v2.8.6` 及以前全部功能与修复（核心系统包防静默偷更护盾、屏幕色彩三档 DPU 桥接、长息屏防锁 60Hz 与自定义应用刷新率默认 144Hz、图标风格与开放异形引擎、最近任务可用内存胶囊、磁吸皮套零进程原生霍尔桥接、通信共享防断联与防杀加固、HDR10/HLG 视频与杜比全景声等）。
+
+---
+
 ## v2.8.6（内置 LSPosed v4.6 + 原生杜比 v1.3）
 
 ### 系统功能补全、刷新率与外设稳定性综合更新
