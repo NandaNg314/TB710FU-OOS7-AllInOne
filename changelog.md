@@ -1,3 +1,14 @@
+## v2.8.10（内置 LSPosed v4.10 + 原生杜比 v1.5）
+
+### 关机/重启秒响应根治、B 站平行视界高刷（方案 A）与蓝牙杜比原厂调音恢复
+- **根治关机 / 重启 10 秒画面死等与 `/data` 卸载占用**：重构 `/system/media/shutanimation.zip`（严格 `ZIP_STORED`，将原厂无限循环 `p 0 0` 改为有限循环 `p 1 8`）并补齐 `system_server` 启动 `bootanim` 与 `bootanim` 写 `sys.boot.animshutdown=1` 两条最小权限 SELinux 规则；全量 28 处模块文件 bind-mount 与后台守护脚本迁入独立内存暂存区 `/mnt/tb710_bind`（`tmpfs`，实测仅占 `4.6M` RAM，彻底实现自定义 `/data (dm-51)` bind-mount 清零），调度与手写笔监听优先切换至系统原生 `/system/bin/inotifyd`；并在 `initrc/commshare.rc` 挂载 `on property:sys.shutdown.requested=*` 与 `on shutdown` 双触发清理服务 `tb710_shutdown_cleanup`（52ms 瞬清全部模块守护）。真机实测关机动画等待从 `10.8s` 直降至 **`0.82s`**，进入 `vdc volume shutdown` 仅 **`1.50s`**，整机重启断电总耗时 **`3.31s`**。
+- **B 站等平行视界 / 视频详情页智能高刷（方案 A）**：`RefreshRateFixHook`（`AioFix v4.10`）将原厂 Activity 级硬锁 `60Hz` 策略智能转换为 `touchMin=60 / touchMax=用户允许最高刷新率` 交互升频模式，实现手指触摸/滑动评论区跟手 `144Hz`、静置播放视频自动回落 `60Hz` 省电；精准排除相机/扫码/截屏/VoIP 通话并完整尊重用户在「自定义应用刷新率」中手选的 `60/90/120/144Hz` 档位。
+- **蓝牙杜比旧版脏库自动修复（恢复耳机原厂智能均衡）**：`customize.sh` 新增一次性安全迁移（带标志保护，若用户曾自定义杜比子参数则自动保留），覆盖升级时清理早期旧版杜比 APK 残留的 `/data/vendor/dolby/dax_sqlite3.db` 脏数据，重启后由 DMS 按联想原厂 `dax-default.xml` 重建干净库，自动恢复「动态」模式下蓝牙耳机/有线耳机的原厂智能均衡（`ieq_enable=1 / Balanced`）。
+
+### 保留项
+- 完整保留 `v2.8.9` 及以前全部功能与修复（卸载零软重启与 `KsuEnv` 双层解耦、酷安/相册 UltraHDR 零爆闪、杜比热切旁路与低音量/MMAP 零绕过、8GB 零 `swapoff` ZRAM 与零拷贝主题挂载、横屏 QQ/音乐零爆音、vivo 互传 160MHz 室内信道同频 SCC、14 路蓝牙无损音量曲线、屏幕色彩三档 DPU 桥接、长息屏防锁 60Hz 与自定义刷新率默认 144Hz、图标风格与开放异形引擎、最近任务内存胶囊、零进程霍尔皮套桥接与通信共享加固等）。
+
+---
 ## v2.8.9（内置 LSPosed v4.9 + 原生杜比 v1.5）
 
 ### 卸载安全、酷安 UltraHDR 零爆闪、杜比热切旁路与 8GB 零 swapoff 稳定性全面升级
