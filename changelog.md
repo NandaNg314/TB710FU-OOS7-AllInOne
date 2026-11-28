@@ -1,3 +1,24 @@
+## v2.8.12（内置 LSPosed v4.12 + 原生杜比 v1.5）
+
+### 游戏魔盒空壳彻底精简、PUBGM/全外服满血适配、QQ 音乐后台切歌修复与原子随身听流畅度优化
+- **游戏魔盒无底层空壳彻底精简**：基于真机 APK 字节码与底层 HAL 实查，隐藏无硬件/无底层后端的「语音变声（变声器）」「人声增强 / 语音高光（声音泡泡）」「外设光效」（同步覆盖侧边栏、游戏工具、设置页及系统设置搜索索引，外设光效隐藏后侧边栏直接呈现「屏幕光效」），并补齐 `common.a.t1` 纵深防御；完整保留「屏幕光效」「游戏伴侣」「游戏相机」「对局复盘」「直驱供电」「防误触」等全部实机可用项。
+- **PUBGM 国际服与全外服游戏满血适配**：
+  - 引入零锁纯内存 `CATEGORY_GAME | FLAG_IS_GAME` 缓存并补全 PUBGM 全服（`com.tencent.ig` / 韩/印/越/台/NewState）、米哈游国际服（`com.HoYoverse.*`）、Level Infinite、Garena、CODM 等外服纯游戏识别（严格放行森空岛 / 库街区 / 米游社 / 网易云 / QQ / 微信等非游戏 App）；
+  - 新增事件驱动、零 IPC 的前台全屏游戏自动兜底调度（`DisplayContent.setFocusedApp` 直接读取现成 `ActivityRecord.info.applicationInfo`，天然支持多用户分身）：即便未手动把外服加入国行游戏魔盒，进游戏也自动解除日常 Mode 0 的 40℃ 温控墙与双大核暂停，切换满血游戏调度与联咏 `/proc/game_mode=1` 游戏触控；
+  - 实时监听 `perf_game_list` 变更（无需重启生效）、修复 WebUI 手选固定档位跳过活跃游戏追踪的漏洞，全链路统一强横屏 `357141415` 防误伤、PEM 后台防杀豁免与 WebUI 闪退诊断。
+- **手机版 QQ 音乐后台切歌失灵根治（`MusicWidgetFixHook`）**：
+  - 修复 OriginOS `QQMusicController` 切歌绕过 `MediaController` 硬走同步 AIDL 死等主进程 15 秒超时并返回 `code=9` 被静默吞错的缺陷：控制中心与桌面原子组件点下一首/上一首优先直走活跃 `MediaController`（直达 `:QQPlayerService`，零卡死且不唤醒 200MB 主进程），异常码自动降级兜底；
+  - `system_server` 复用独立后台线程维护无锁纯内存 `sActiveMediaUids`（强判 `USAGE_MEDIA` 且 `isActive()==true`），在 `VivoBringupController` 中精准放行控制中心/原子随身听及活跃播歌期同 UID 互拉，零跨服务锁序风险、零额外功耗。
+- **原子随身听控制页掉帧三连优化（`MusicCard` 掉帧率 `40.18%` → `6.98%`）**：
+  - `service.sh` 后台延迟 AOT `speed` 编译补全 `com.vivo.musicmixcard`（消除 `[status=verify]` 纯解释执行拖慢控制中心）、`com.vivo.musicwidgetmix` 与 `com.vivo.systemuiplugin`（仍严格遵循 `+80s` 与 `MemAvailable > 1200MB` 保护）；
+  - `RefreshRateFixHook` 在智能切换（`mode=1`）下为短时悬浮的 `com.vivo.musicwidgetmix/MusicCard` 精确锁定 144Hz（关闭即释放回落 60Hz，零待机耗电）；
+  - `MusicWidgetFixHook` 解锁大卡片背景律动光效 `30 FPS` 硬锁至 `60 FPS`。
+- **作用域更新**：新增 `com.vivo.musicwidgetmix`（共 36 个系统/组件作用域，保持零游戏包红线）。
+
+### 保留项
+- 完整保留 `v2.8.11` 及以前全部功能与修复（原生「智能亮屏熄屏」方案 A 联动与隐藏无服务注视亮屏、满血智能切换刷新率、电池/控制中心/魔盒全 6 档调度联动、联咏 NT36532 硬件游戏触控与亮屏 `+500ms` 补刷、0.82s 关机动画与零 `/data` 卸载占用、B 站平行视界高刷、杜比热切旁路与蓝牙原厂调音、8GB 零 `swapoff` ZRAM、卸载零软重启、酷安/相册 UltraHDR 零爆闪、横屏零爆音、vivo 互传 160MHz 同频 SCC、14 路蓝牙无损音量曲线与通信共享加固等）。
+
+---
 ## v2.8.11（内置 LSPosed v4.11 + 原生杜比 v1.5）
 
 ### 原生系统联动升级、游戏魔盒精修与联想硬件游戏触控接入
